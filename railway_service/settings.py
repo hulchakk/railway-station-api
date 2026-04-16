@@ -81,6 +81,9 @@ TEMPLATES = [
 WSGI_APPLICATION = "railway_service.wsgi.application"
 
 
+AUTH_USER_MODEL = "user.User"
+
+
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
