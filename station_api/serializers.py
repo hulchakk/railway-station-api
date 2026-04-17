@@ -1,4 +1,4 @@
-from rest_framework import serializers
+from django.db import transaction
 from rest_framework.serializers import ModelSerializer
 
 from station_api.models import (
@@ -10,7 +10,6 @@ from station_api.models import (
     Train,
     TrainType,
 )
-from user.serializers import UserSerializer
 
 
 class JourneySerializer(ModelSerializer):
@@ -48,13 +47,23 @@ class OrderSerializer(ModelSerializer):
             "tickets",
         )
 
+    def create(self, validated_data):
+        with transaction.atomic():
+            tickets_data = validated_data.pop("tickets")
+            order = Order.objects.create(**validated_data)
+            for ticket_data in tickets_data:
+                Ticket.objects.create(order=order, **ticket_data)
+            return order
 
-class OrderListSerializer(OrderSerializer):
-    tickets = serializers.SlugRelatedField(
-        many=True,
-        read_only=True,
-        slug_field="id",
-    )
+
+class OrderListSerializer(ModelSerializer):
+    class Meta:
+        model = Order
+        fields = (
+            "id",
+            "created_at",
+            "tickets",
+        )
 
 
 class StationSerializer(ModelSerializer):

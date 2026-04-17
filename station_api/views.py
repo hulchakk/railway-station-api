@@ -5,7 +5,6 @@ from station_api.serializers import (
     RouteListSerializer,
     RouteSerializer,
     StationSerializer,
-    TicketSerializer,
     OrderSerializer,
     OrderListSerializer,
     TrainListSerializer,
@@ -16,7 +15,6 @@ from station_api.models import (
     Journey,
     Route,
     Station,
-    Ticket,
     Order,
     Train,
     TrainType,
@@ -28,11 +26,6 @@ class JourneyViewSet(ModelViewSet):
     serializer_class = JourneySerializer
 
 
-class TicketViewSet(ModelViewSet):
-    serializer_class = TicketSerializer
-    queryset = Ticket.objects
-
-
 class OrderViewSet(ModelViewSet):
     queryset = Order.objects
 
@@ -40,7 +33,7 @@ class OrderViewSet(ModelViewSet):
         return self.queryset.filter(user=self.request.user)
 
     def perform_create(self, serializer):
-       serializer.save(user=self.request.user)
+        serializer.save(user=self.request.user)
 
     def get_serializer_class(self):
         if self.action == "list":

@@ -5,7 +5,6 @@ from station_api.views import (
     JourneyViewSet,
     RouteViewSet,
     StationViewSet,
-    TicketViewSet,
     OrderViewSet,
     TrainTypeViewSet,
     TrainViewSet,
@@ -15,7 +14,6 @@ from station_api.views import (
 router = DefaultRouter()
 
 router.register("journeys", JourneyViewSet)
-router.register("tickets", TicketViewSet)
 router.register("orders", OrderViewSet)
 router.register("routs", RouteViewSet)
 router.register("stations", StationViewSet)
