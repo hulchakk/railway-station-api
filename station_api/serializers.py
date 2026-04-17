@@ -4,7 +4,9 @@ from rest_framework.serializers import ModelSerializer
 from station_api.models import (
     Journey,
     Ticket,
+    Order
 )
+from user.serializers import UserSerializer
 
 
 class JourneySerializer(ModelSerializer):
@@ -29,3 +31,17 @@ class TicketSerializer(ModelSerializer):
             "journey",
             "order",
         )
+
+
+class OrderSerializer(ModelSerializer):
+    class Meta:
+        model = Order
+        fields = (
+            "id",
+            "created_at",
+            "user",
+        )
+
+
+class OrderListSerializer(OrderSerializer):
+    user = UserSerializer()
