@@ -25,22 +25,22 @@ from station_api.models import (
 
 
 class CrewViewSet(ModelViewSet):
-    queryset = Crew.objects
+    queryset = Crew.objects.all()
     serializer_class = CrewSerializer
 
 
 class JourneyViewSet(ModelViewSet):
-    queryset = Journey.objects
+    queryset = Journey.objects.all()
 
     def get_serializer_class(self):
-        if self.action in ("list", "retrieve"):
+        if self.action == "retrieve":
             return JourneyListSerializer
 
         return JourneySerializer
 
 
 class OrderViewSet(ModelViewSet):
-    queryset = Order.objects
+    queryset = Order.objects.all()
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
@@ -56,7 +56,7 @@ class OrderViewSet(ModelViewSet):
 
 
 class RouteViewSet(ModelViewSet):
-    queryset = Route.objects
+    queryset = Route.objects.all()
 
     def get_serializer_class(self):
         if self.action in ("list", "retrieve"):
@@ -67,11 +67,11 @@ class RouteViewSet(ModelViewSet):
 
 class StationViewSet(ModelViewSet):
     serializer_class = StationSerializer
-    queryset = Station.objects
+    queryset = Station.objects.all()
 
 
 class TrainViewSet(ModelViewSet):
-    queryset = Train.objects
+    queryset = Train.objects.all()
 
     def get_serializer_class(self):
         if self.action in ("list", "retrieve"):
@@ -82,4 +82,4 @@ class TrainViewSet(ModelViewSet):
 
 class TrainTypeViewSet(ModelViewSet):
     serializer_class = TrainTypeSerializer
-    queryset = TrainType.objects
+    queryset = TrainType.objects.all()
