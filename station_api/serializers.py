@@ -3,6 +3,7 @@ from rest_framework.serializers import ModelSerializer
 
 from station_api.models import (
     Journey,
+    Ticket,
 )
 
 
@@ -15,4 +16,16 @@ class JourneySerializer(ModelSerializer):
             "train",
             "departure_time",
             "arrival_time",
+        )
+
+
+class TicketSerializer(ModelSerializer):
+    class Meta:
+        model = Ticket
+        fields = (
+            "id",
+            "cargo",
+            "seat",
+            "journey",
+            "order",
         )
