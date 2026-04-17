@@ -32,6 +32,14 @@ class Route(models.Model):
     )
     distance = models.IntegerField()
 
+    class Meta:
+        constraints = [
+            CheckConstraint(
+                check=~Q(source=F("destination")),
+                name="source_not_equal_destination"
+            )
+        ]
+
 
 class TrainType(models.Model):
     name = models.CharField(max_length=255)
