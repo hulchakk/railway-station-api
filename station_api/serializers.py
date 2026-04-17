@@ -2,6 +2,7 @@ from django.db import transaction
 from rest_framework.serializers import ModelSerializer
 
 from station_api.models import (
+    Crew,
     Journey,
     Ticket,
     Order,
@@ -12,6 +13,16 @@ from station_api.models import (
 )
 
 
+class CrewSerializer(ModelSerializer):
+    class Meta:
+        model = Crew
+        fields = (
+            "id",
+            "first_name",
+            "last_name",
+        )
+
+
 class JourneySerializer(ModelSerializer):
     class Meta:
         model = Journey
@@ -19,9 +30,14 @@ class JourneySerializer(ModelSerializer):
             "id",
             "route",
             "train",
+            "crew",
             "departure_time",
             "arrival_time",
         )
+
+
+class JourneyListSerializer(JourneySerializer):
+    crew = CrewSerializer(many=True)
 
 
 class TicketSerializer(ModelSerializer):

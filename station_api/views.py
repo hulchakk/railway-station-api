@@ -1,6 +1,8 @@
 from rest_framework.viewsets import ModelViewSet
 
 from station_api.serializers import (
+    CrewSerializer,
+    JourneyListSerializer,
     JourneySerializer,
     RouteListSerializer,
     RouteSerializer,
@@ -12,6 +14,7 @@ from station_api.serializers import (
     TrainTypeSerializer,
 )
 from station_api.models import (
+    Crew,
     Journey,
     Route,
     Station,
@@ -21,9 +24,19 @@ from station_api.models import (
 )
 
 
+class CrewViewSet(ModelViewSet):
+    queryset = Crew.objects
+    serializer_class = CrewSerializer
+
+
 class JourneyViewSet(ModelViewSet):
     queryset = Journey.objects
-    serializer_class = JourneySerializer
+
+    def get_serializer_class(self):
+        if self.action in ("list", "retrieve"):
+            return JourneyListSerializer
+
+        return JourneySerializer
 
 
 class OrderViewSet(ModelViewSet):
