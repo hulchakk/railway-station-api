@@ -30,7 +30,7 @@ class Route(models.Model):
         on_delete=models.CASCADE,
         related_name="arrival_routes",
     )
-    distance = models.IntegerField()
+    distance = models.PositiveIntegerField()
 
     class Meta:
         constraints = [
@@ -47,8 +47,8 @@ class TrainType(models.Model):
 
 class Train(models.Model):
     name = models.CharField(max_length=255)
-    cargo_num = models.IntegerField()
-    places_in_cargo = models.IntegerField()
+    cargo_num = models.PositiveIntegerField()
+    places_in_cargo = models.PositiveIntegerField()
     train_type = models.ForeignKey(
         TrainType,
         on_delete=models.CASCADE,
@@ -91,10 +91,15 @@ class Order(models.Model):
         related_name="orders",
     )
 
+    class Meta:
+        ordering = (
+            "-created_at",
+        )
+
 
 class Ticket(models.Model):
-    cargo = models.IntegerField()
-    seat = models.IntegerField()
+    cargo = models.PositiveIntegerField()
+    seat = models.PositiveIntegerField()
     journey = models.ForeignKey(
         Journey,
         on_delete=models.CASCADE,
