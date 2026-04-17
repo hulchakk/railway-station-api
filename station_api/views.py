@@ -1,3 +1,13 @@
-from django.shortcuts import render
+from rest_framework.viewsets import ModelViewSet
 
-# Create your views here.
+from station_api.serializers import (
+    JourneySerializer,
+)
+from station_api.models import (
+    Journey
+)
+
+
+class JourneyViewSet(ModelViewSet):
+    serializer_class = JourneySerializer
+    queryset = Journey.objects
