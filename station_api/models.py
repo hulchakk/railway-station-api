@@ -101,7 +101,7 @@ class Ticket(models.Model):
     class Meta:
         constraints = [
             UniqueConstraint(
-                fields=["seat", "journey"],
+                fields=["seat", "journey", "cargo"],
                 name="unique_ticket_seat_journey"
             ),
         ]
