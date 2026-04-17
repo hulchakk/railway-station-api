@@ -38,17 +38,23 @@ class TicketSerializer(ModelSerializer):
 
 
 class OrderSerializer(ModelSerializer):
+    tickets = TicketSerializer(many=True)
+
     class Meta:
         model = Order
         fields = (
             "id",
             "created_at",
-            "user",
+            "tickets",
         )
 
 
 class OrderListSerializer(OrderSerializer):
-    user = UserSerializer()
+    tickets = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field="id",
+    )
 
 
 class StationSerializer(ModelSerializer):
