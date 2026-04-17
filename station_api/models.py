@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.db.models import (
+    F,
+    Q,
+    CheckConstraint,
     UniqueConstraint,
 )
 
@@ -62,6 +65,14 @@ class Journey(models.Model):
     )
     departure_time = models.DateTimeField()
     arrival_time = models.DateTimeField()
+
+    class Meta:
+        constraints = [
+            CheckConstraint(
+                check=Q(arrival_time__gt=F("departure_time")),
+                name="arrival_time_after_departure_time"
+            ),
+        ]
 
 
 class Order(models.Model):
