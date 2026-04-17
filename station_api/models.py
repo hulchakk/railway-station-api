@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.db.models import (
+    UniqueConstraint,
+)
 
 
 class Crew(models.Model):
@@ -83,3 +86,11 @@ class Ticket(models.Model):
         on_delete=models.CASCADE,
         related_name="tickets",
     )
+
+    class Meta:
+        constraints = [
+            UniqueConstraint(
+                fields=["seat", "journey"],
+                name="unique_ticket_seat_journey"
+            ),
+        ]
