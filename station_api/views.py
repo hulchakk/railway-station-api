@@ -37,7 +37,31 @@ class JourneyViewSet(ModelViewSet):
     queryset = Journey.objects.all()
 
     def get_queryset(self):
-        return self.queryset.select_related(
+        queryset = self.queryset
+
+        source = self.request.query_params.get("source")
+        destination = self.request.query_params.get("destination")
+        departure_at = self.request.query_params.get("departure_at")
+        arrival_at = self.request.query_params.get("arrival_at")
+
+        if source:
+            queryset = queryset.filter(
+                route__source=source
+            )
+        if destination:
+            queryset = queryset.filter(
+                route__destination=destination
+            )
+        if departure_at:
+            queryset = queryset.filter(
+                departure_time=departure_at
+            )
+        if arrival_at:
+            queryset = queryset.filter(
+                arrival_time=arrival_at
+            )
+
+        return queryset.select_related(
             "route__source",
             "route__destination",
             "train__train_type"
