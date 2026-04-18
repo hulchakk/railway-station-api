@@ -90,8 +90,21 @@ class OrderViewSet(ModelViewSet):
                 "journey__train__train_type"
             )
         )
+        queryset = self.queryset
 
-        return self.queryset.filter(
+        date_before = self.request.query_params.get("date_before")
+        date_after = self.request.query_params.get("date_after")
+
+        if date_before:
+            queryset = queryset.filter(
+                created_at__lte=date_before
+            )
+        if date_after:
+            queryset = queryset.filter(
+                created_at__gte=date_after
+            )
+
+        return queryset.filter(
             user=self.request.user
         ).select_related("user").prefetch_related(tickets_prefetch)
 
