@@ -1,7 +1,7 @@
 from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
-from user.serializers import UserSerializer
+from user.serializers import UserManageSerializer, UserSerializer
 
 
 class CreateUserView(CreateAPIView):
@@ -10,7 +10,7 @@ class CreateUserView(CreateAPIView):
 
 
 class ManageUserView(RetrieveUpdateAPIView):
-    serializer_class = UserSerializer
+    serializer_class = UserManageSerializer
     permission_classes = (IsAuthenticated,)
 
     def get_object(self):
