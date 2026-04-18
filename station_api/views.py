@@ -171,7 +171,21 @@ class TrainViewSet(ModelViewSet):
     queryset = Train.objects.all()
 
     def get_queryset(self):
-        return self.queryset.select_related(
+        queryset = self.queryset
+
+        name_startswith = self.request.query_params.get("name_startswith")
+        train_type = self.request.query_params.get("train_type")
+
+        if name_startswith:
+            queryset = queryset.filter(
+                name__istartswith=name_startswith
+            )
+        if train_type:
+            queryset = queryset.filter(
+                train_type=train_type
+            )
+
+        return queryset.select_related(
             "train_type",
         )
 
