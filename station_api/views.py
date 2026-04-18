@@ -80,6 +80,12 @@ class OrderViewSet(ModelViewSet):
 class RouteViewSet(ModelViewSet):
     queryset = Route.objects.all()
 
+    def get_queryset(self):
+        return self.queryset.select_related(
+            "source",
+            "destination"
+        )
+
     def get_serializer_class(self):
         if self.action in ("list", "retrieve"):
             return RouteListSerializer
