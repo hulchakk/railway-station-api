@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
+from datetime import timedelta
 import os
 from pathlib import Path
 
@@ -135,7 +136,7 @@ STATIC_URL = "static/"
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework.authentication.TokenAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": (
         "station_api.permissions.IsAdminOrReadOnly",
@@ -150,4 +151,10 @@ REST_FRAMEWORK = {
         "anon": "5/minute",
         "user": "20/minute"
     }
+}
+
+SIMPLE_JWT = {
+   "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+   "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+   "ROTATE_REFRESH_TOKENS": True
 }
