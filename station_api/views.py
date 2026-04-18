@@ -154,6 +154,18 @@ class StationViewSet(ModelViewSet):
     serializer_class = StationSerializer
     queryset = Station.objects.all()
 
+    def get_queryset(self):
+        queryset = self.queryset
+
+        name_startswith = self.request.query_params.get("name_startswith")
+
+        if name_startswith:
+            queryset = queryset.filter(
+                name__istartswith=name_startswith
+            )
+
+        return queryset
+
 
 class TrainViewSet(ModelViewSet):
     queryset = Train.objects.all()
