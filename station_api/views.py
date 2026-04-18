@@ -1,3 +1,4 @@
+from django.db.models import Prefetch
 from rest_framework.viewsets import ModelViewSet
 
 from station_api.serializers import (
@@ -19,6 +20,7 @@ from station_api.models import (
     Route,
     Station,
     Order,
+    Ticket,
     Train,
     TrainType,
 )
@@ -52,7 +54,18 @@ class OrderViewSet(ModelViewSet):
     queryset = Order.objects.all()
 
     def get_queryset(self):
-        return self.queryset.filter(user=self.request.user)
+        tickets_prefetch = Prefetch(
+            "tickets",
+            queryset=Ticket.objects.select_related(
+                "journey__route__source",
+                "journey__route__destination",
+                "journey__train__train_type"
+            )
+        )
+
+        return self.queryset.filter(
+            user=self.request.user
+        ).select_related("user").prefetch_related(tickets_prefetch)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
