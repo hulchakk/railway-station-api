@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "user",
     "station_api",
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
