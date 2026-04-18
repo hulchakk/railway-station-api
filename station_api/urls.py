@@ -1,0 +1,31 @@
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+
+from station_api.views import (
+    CrewViewSet,
+    JourneyViewSet,
+    RouteViewSet,
+    StationViewSet,
+    OrderViewSet,
+    TrainTypeViewSet,
+    TrainViewSet,
+)
+
+
+router = DefaultRouter()
+
+router.register("journeys", JourneyViewSet)
+router.register("orders", OrderViewSet)
+router.register("routs", RouteViewSet)
+router.register("stations", StationViewSet)
+router.register("trains", TrainViewSet)
+router.register("train_types", TrainTypeViewSet)
+router.register("crew", CrewViewSet)
+
+
+urlpatterns = [
+    path("", include(router.urls)),
+]
+
+
+app_name = "station_api"
