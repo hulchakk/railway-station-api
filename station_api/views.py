@@ -1,5 +1,8 @@
 from django.db.models import Prefetch
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import (
+    IsAuthenticated,
+)
 
 from station_api.serializers import (
     CrewSerializer,
@@ -25,6 +28,9 @@ from station_api.models import (
     Ticket,
     Train,
     TrainType,
+)
+from station_api.permissions import (
+    IsOwner,
 )
 
 
@@ -101,6 +107,7 @@ class JourneyViewSet(ModelViewSet):
 
 class OrderViewSet(ModelViewSet):
     queryset = Order.objects.all()
+    permission_classes = (IsOwner, IsAuthenticated)
 
     def get_queryset(self):
         tickets_prefetch = Prefetch(
