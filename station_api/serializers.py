@@ -1,4 +1,5 @@
 from django.db import transaction
+from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
 from station_api.models import (
@@ -21,23 +22,6 @@ class CrewSerializer(ModelSerializer):
             "first_name",
             "last_name",
         )
-
-
-class JourneySerializer(ModelSerializer):
-    class Meta:
-        model = Journey
-        fields = (
-            "id",
-            "route",
-            "train",
-            "crew",
-            "departure_time",
-            "arrival_time",
-        )
-
-
-class JourneyListSerializer(JourneySerializer):
-    crew = CrewSerializer(many=True)
 
 
 class TicketSerializer(ModelSerializer):
@@ -131,4 +115,52 @@ class TrainSerializer(ModelSerializer):
 
 
 class TrainListSerializer(TrainSerializer):
-    train_type = TrainTypeSerializer()
+    train_type = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field="name"
+    )
+
+
+class JourneySerializer(ModelSerializer):
+    class Meta:
+        model = Journey
+        fields = (
+            "id",
+            "route",
+            "train",
+            "crew",
+            "departure_time",
+            "arrival_time",
+        )
+
+
+class JourneyRetrieveSerializer(JourneySerializer):
+    crew = CrewSerializer(many=True)
+    route = RouteListSerializer()
+    train = TrainListSerializer()
+
+
+class JourneyListSerializer(ModelSerializer):
+    rout_source = serializers.CharField(
+        source="route.source.name",
+        read_only=True
+    )
+    rout_destination = serializers.CharField(
+        source="route.destination.name",
+        read_only=True
+    )
+    train = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field="name"
+    )
+
+    class Meta:
+        model = Journey
+        fields = (
+            "id",
+            "rout_source",
+            "rout_destination",
+            "train",
+            "departure_time",
+            "arrival_time",
+        )
