@@ -199,3 +199,15 @@ class TrainViewSet(ModelViewSet):
 class TrainTypeViewSet(ModelViewSet):
     serializer_class = TrainTypeSerializer
     queryset = TrainType.objects.all()
+
+    def get_queryset(self):
+        queryset = self.queryset
+
+        name_startswith = self.request.query_params.get("name_startswith")
+
+        if name_startswith:
+            queryset = queryset.filter(
+                name__istartswith=name_startswith
+            )
+
+        return queryset
