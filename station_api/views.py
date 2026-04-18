@@ -32,6 +32,27 @@ class CrewViewSet(ModelViewSet):
     queryset = Crew.objects.all()
     serializer_class = CrewSerializer
 
+    def get_queryset(self):
+        queryset = self.queryset
+
+        first_name_startswith = self.request.query_params.get(
+            "first_name_startswith"
+        )
+        last_name_startswith = self.request.query_params.get(
+            "last_name_startswith"
+        )
+
+        if first_name_startswith:
+            queryset = queryset.filter(
+                first_name__istartswith=first_name_startswith
+            )
+        if last_name_startswith:
+            queryset = queryset.filter(
+                last_name__istartswith=last_name_startswith
+            )
+
+        return queryset
+
 
 class JourneyViewSet(ModelViewSet):
     queryset = Journey.objects.all()
