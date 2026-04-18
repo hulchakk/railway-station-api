@@ -122,7 +122,21 @@ class RouteViewSet(ModelViewSet):
     queryset = Route.objects.all()
 
     def get_queryset(self):
-        return self.queryset.select_related(
+        queryset = self.queryset
+
+        source = self.request.query_params.get("source")
+        destination = self.request.query_params.get("destination")
+
+        if source:
+            queryset = queryset.filter(
+                source=source
+            )
+        if destination:
+            queryset = queryset.filter(
+                destination=destination
+            )
+
+        return queryset.select_related(
             "source",
             "destination"
         )
