@@ -101,6 +101,11 @@ class StationViewSet(ModelViewSet):
 class TrainViewSet(ModelViewSet):
     queryset = Train.objects.all()
 
+    def get_queryset(self):
+        return self.queryset.select_related(
+            "train_type",
+        )
+
     def get_serializer_class(self):
         if self.action in ("list", "retrieve"):
             return TrainListSerializer
