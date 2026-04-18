@@ -6,6 +6,7 @@ from station_api.serializers import (
     JourneyListSerializer,
     JourneySerializer,
     RouteListSerializer,
+    RouteRetrieveSerializer,
     RouteSerializer,
     JourneyRetrieveSerializer,
     StationSerializer,
@@ -90,8 +91,10 @@ class RouteViewSet(ModelViewSet):
         )
 
     def get_serializer_class(self):
-        if self.action in ("list", "retrieve"):
+        if self.action == "list":
             return RouteListSerializer
+        if self.action == "retrieve":
+            return RouteRetrieveSerializer
 
         return RouteSerializer
 
